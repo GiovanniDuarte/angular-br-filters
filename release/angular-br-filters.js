@@ -244,6 +244,23 @@ var CPF = function(value) {
 	return formatedValue;
 };
 
+/*exported CPF o CNPJ */
+var CPFCNPJ = function(value) {
+	if(!value) {
+		return value;
+	}
+
+	if (value.length > 11) {
+		var cnpjPattern = new StringMask('00.000.000\/0000-00');
+		var formatedValue = cnpjPattern.apply(value);
+	} else {
+		var cpfPattern = new StringMask('000.000.000-00');
+		var formatedValue = cpfPattern.apply(value);
+	}
+
+	return formatedValue;
+};
+
 if (!StringMask && typeof require === 'function') {
 	var StringMask = require('string-mask');
 }
@@ -390,6 +407,7 @@ var BrM = {
    ie: IE,
    cpf: CPF,
    cnpj: CNPJ,
+   cpfcnpj: CPFCNPJ,
    phone: PHONE,
    cep: CEP,
    finance: FINANCE,
@@ -432,6 +450,11 @@ angular.module('idf.br-filters', [])
 .filter('brCnpj', [function() {
 	return function(input) {
 		return BrM.cnpj(input);
+	};
+}])
+.filter('brCpfCnpj', [function() {
+	return function(input) {
+		return BrM.cpfcnpj(input);
 	};
 }])
 .filter('brIe', [function() {
